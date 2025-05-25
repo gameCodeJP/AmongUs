@@ -175,9 +175,9 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  isMoveable: 0
   speed: 2
   playerColor: 0
+  OwnerNetId: 0
 --- !u!95 &6695349432392169065
 Animator:
   serializedVersion: 5
