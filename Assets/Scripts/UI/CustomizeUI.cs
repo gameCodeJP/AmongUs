@@ -1,4 +1,5 @@
 using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,14 +37,15 @@ public class CustomizeUI : MonoBehaviour
 
     public void UpdateColorButton()
     {
-        var roomSlots = (NetworkManager.singleton as AmongUsRoomManager).roomSlots;
-
+        // 일단 모든 컬러들을 활성화
         for (int i = 0; i < colorSelectButtons.Count; ++i)
         {
             colorSelectButtons[i].SetInteractable(true);
         }
 
-        foreach(var player in roomSlots)
+        // 대기방에 있는 모든 플레이어들을 조회하여 사용하고 있는 컬러버튼은 비활성화 한다.
+        var roomSlots = (NetworkManager.singleton as AmongUsRoomManager).roomSlots;
+        foreach (var player in roomSlots)
         {
             var roomPlayer = player as AmongUsRoomPlayer;
             colorSelectButtons[(int)roomPlayer.playerColor].SetInteractable(false);
@@ -57,9 +59,23 @@ public class CustomizeUI : MonoBehaviour
 
     public void OnClickButton(int idx)
     {
+        // 선택 가능한 컬러가 아니라면 return
         if (colorSelectButtons[idx].isInteractable == false)
             return;
 
+        AmongUsRoomPlayer.MyRoomPlayer.CmdSetPlayerColor((EPlayerColor)idx);
+        UpdatePreviewColor((EPlayerColor)idx);
+    }
 
+    public void Open()
+    {
+        AmongUsRoomPlayer.MyRoomPlayer.lobbyPlayerCharacter.isMoveable = false;
+        gameObject.SetActive(true);
+    }
+
+    public void Close()
+    {
+        AmongUsRoomPlayer.MyRoomPlayer.lobbyPlayerCharacter.isMoveable = true;
+        gameObject.SetActive(false);
     }
 }

@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerMetiral 1
+  m_Name: PlayerMatierial
   m_Shader: {fileID: -6465566751694194690, guid: 2d1f65f0d1921664bae5f120512c4279, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -76,6 +76,6 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _PlayerColor: {r: 1, g: 0, b: 0, a: 1}
+    - _PlayerColor: {r: 0.1, g: 0.1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

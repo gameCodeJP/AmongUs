@@ -26,8 +26,15 @@ public class AmongUsRoomPlayer : NetworkRoomPlayer
         }
     }
 
-    [SyncVar]
+    public CharacterMover lobbyPlayerCharacter;
+
+    [SyncVar(hook = nameof(SetPlayerColor_Hook))]
     public EPlayerColor playerColor;
+
+    public void SetPlayerColor_Hook(EPlayerColor oldColor, EPlayerColor newColor)
+    {
+        LobbyUIManager.Instance.CustomizeUI.UpdateColorButton();
+    }
 
     public override void Start()
     {
@@ -37,6 +44,13 @@ public class AmongUsRoomPlayer : NetworkRoomPlayer
         {
             SpawnLobbyPlayerCharacter();
         }
+    }
+
+    [Command] // 해당 속성을 사용하는 함수는 앞에 cmd를 붙어야 한다.
+    public void CmdSetPlayerColor(EPlayerColor color)
+    {
+        playerColor = color;
+        lobbyPlayerCharacter.playerColor = color;
     }
 
     private void SpawnLobbyPlayerCharacter()
@@ -71,6 +85,7 @@ public class AmongUsRoomPlayer : NetworkRoomPlayer
         // Lobby Player Character 생성
         var playerCharacter = Instantiate(AmongUsRoomManager.singleton.spawnPrefabs[0], spawnPos, Quaternion.identity).GetComponent<LobbyCharacterMover>();
         NetworkServer.Spawn(playerCharacter.gameObject, connectionToClient);
+        playerCharacter.OwnerNetId = netId;
 
         playerCharacter.playerColor = color;
     }
