@@ -26,6 +26,6 @@ public class LobbyCharacterMover : CharacterMover
         if (isOwned == false)
             return;
 
-        isMoveable = true;
+        isMovable = true;
     }
 }

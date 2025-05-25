@@ -10,7 +10,8 @@ public class AmongUsRoomPlayer : NetworkRoomPlayer
     {
         get
         {
-            if(myRoomPlayer == null)
+            // 만약 null일 경우 인게임내에 AmongUsRoomPlayer중에 나의 캐릭터를 가져와 할당
+            if (myRoomPlayer == null)
             {
                 var players = FindObjectsOfType<AmongUsRoomPlayer>();
                 foreach (var player in players)
@@ -18,6 +19,7 @@ public class AmongUsRoomPlayer : NetworkRoomPlayer
                     if(player.isOwned)
                     {
                         myRoomPlayer = player;
+                        break;
                     }
                 }
             }
@@ -33,7 +35,8 @@ public class AmongUsRoomPlayer : NetworkRoomPlayer
 
     public void SetPlayerColor_Hook(EPlayerColor oldColor, EPlayerColor newColor)
     {
-        LobbyUIManager.Instance.CustomizeUI.UpdateColorButton();
+        LobbyUIManager.Instance?.CustomizeUI.UpdateSelectColorButton(newColor, false);
+        LobbyUIManager.Instance?.CustomizeUI.UpdateSelectColorButton(oldColor, true);
     }
 
     public override void Start()
@@ -44,6 +47,11 @@ public class AmongUsRoomPlayer : NetworkRoomPlayer
         {
             SpawnLobbyPlayerCharacter();
         }
+    }
+
+    private void OnDestroy()
+    {
+        LobbyUIManager.Instance?.CustomizeUI.UpdateSelectColorButton(playerColor, true);
     }
 
     [Command] // 해당 속성을 사용하는 함수는 앞에 cmd를 붙어야 한다.

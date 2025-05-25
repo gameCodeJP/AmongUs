@@ -7,7 +7,21 @@ public class CharacterMover : NetworkBehaviour
 {
     private Animator animator;
     private new Rigidbody2D rigidbody2D;
-    public bool isMoveable;
+
+    protected bool isMovable;
+    public bool IsMovable 
+    {
+        get { return isMovable; }
+        set
+        {
+            if (value == false)
+            {
+                animator.SetBool("isMove", false);
+            }
+
+            isMovable = value;
+        }
+    }
 
     [SyncVar]
     public float speed = 2f;
@@ -54,7 +68,7 @@ public class CharacterMover : NetworkBehaviour
     public void Mode()
     {
         // 권한이 있는 캐릭터만 움직일 수 있다.
-        if (isOwned == false || isMoveable == false)
+        if (isOwned == false || isMovable == false)
             return;
 
         bool isMove = false;

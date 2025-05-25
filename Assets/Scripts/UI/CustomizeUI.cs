@@ -52,6 +52,11 @@ public class CustomizeUI : MonoBehaviour
         }
     }
 
+    public void UpdateSelectColorButton(EPlayerColor color, bool isInteractable)
+    {
+        colorSelectButtons[(int)color].SetInteractable(isInteractable);
+    }
+
     public void UpdatePreviewColor(EPlayerColor color)
     {
         characterPreview.material.SetColor("_PlayerColor", PlayerColor.GetColor(color));
@@ -69,13 +74,13 @@ public class CustomizeUI : MonoBehaviour
 
     public void Open()
     {
-        AmongUsRoomPlayer.MyRoomPlayer.lobbyPlayerCharacter.isMoveable = false;
+        AmongUsRoomPlayer.MyRoomPlayer.lobbyPlayerCharacter.IsMovable = false;
         gameObject.SetActive(true);
     }
 
     public void Close()
     {
-        AmongUsRoomPlayer.MyRoomPlayer.lobbyPlayerCharacter.isMoveable = true;
+        AmongUsRoomPlayer.MyRoomPlayer.lobbyPlayerCharacter.IsMovable = true;
         gameObject.SetActive(false);
     }
 }
