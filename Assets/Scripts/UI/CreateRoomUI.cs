@@ -114,8 +114,12 @@ public class CreateRoomUI : MonoBehaviour
 
     public void CreateRoom()
     {
-        NetworkManager manager = AmongUsRoomManager.singleton;
+        AmongUsRoomManager manager = AmongUsRoomManager.singleton as AmongUsRoomManager;
 
+        // 방 설정 작업
+        manager.minPlayerCount = roomData.imposterCount == 1 ? 4 : roomData.imposterCount == 2 ? 7 : 9;
+        manager.imposterCount = roomData.imposterCount;
+        manager.maxConnections = roomData.maxPlayerCount;
         manager.StartHost();
     }
 }

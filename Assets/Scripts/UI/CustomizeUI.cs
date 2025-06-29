@@ -8,6 +8,15 @@ using UnityEngine.UI;
 public class CustomizeUI : MonoBehaviour
 {
     [SerializeField]
+    private Button colorButton;
+    [SerializeField]
+    private GameObject colorPanel;
+    [SerializeField]
+    private Button gameRuleButton;
+    [SerializeField]
+    private GameObject gameRulePanel;
+
+    [SerializeField]
     private Image characterPreview;
 
     [SerializeField]
@@ -17,6 +26,24 @@ public class CustomizeUI : MonoBehaviour
     {
         var inst = Instantiate(characterPreview.material);
         characterPreview.material = inst;
+    }
+
+    public void ActiveColorPanel()
+    {
+        colorButton.image.color = new Color(0f, 0f, 0f, 0.75f);
+        gameRuleButton.image.color = new Color(0f, 0f, 0f, 0.25f);
+
+        colorPanel.SetActive(true);
+        gameRulePanel.SetActive(false);
+    }
+
+    public void ActiveGameRulePanel()
+    {
+        colorButton.image.color = new Color(0f, 0f, 0f, 0.25f);
+        gameRuleButton.image.color = new Color(0f, 0f, 0f, 0.75f);
+
+        colorPanel.SetActive(false);
+        gameRulePanel.SetActive(true);
     }
 
     private void OnEnable()
@@ -76,6 +103,8 @@ public class CustomizeUI : MonoBehaviour
     {
         AmongUsRoomPlayer.MyRoomPlayer.lobbyPlayerCharacter.IsMovable = false;
         gameObject.SetActive(true);
+
+        ActiveColorPanel();
     }
 
     public void Close()
