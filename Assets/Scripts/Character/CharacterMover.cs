@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.UI;
+using Mirror.BouncyCastle.Asn1.Crmf;
 
 public class CharacterMover : NetworkBehaviour
 {
@@ -41,6 +43,15 @@ public class CharacterMover : NetworkBehaviour
         spriteRenderer.material.SetColor("_PlayerColor", PlayerColor.GetColor(newColor));
     }
 
+    [SyncVar(hook = nameof(SetNickname_Hook))]
+    public string nickname;
+    [SerializeField]
+    private Text nicknameText;
+    public void SetNickname_Hook(string _, string value)
+    {
+        nicknameText.text = value;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -62,10 +73,19 @@ public class CharacterMover : NetworkBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Mode();
+        Move();
+
+        if (transform.localScale.x < 0)
+        {
+            nicknameText.transform.localScale = new Vector3(-1f, 1f, 1f);
+        }
+        else if (transform.localScale.x > 0)
+        {
+            nicknameText.transform.localScale = new Vector3(1f, 1f, 1f);
+        }
     }
 
-    public void Mode()
+    public void Move()
     {
         // 권한이 있는 캐릭터만 움직일 수 있다.
         if (isOwned == false || isMovable == false)
@@ -74,16 +94,13 @@ public class CharacterMover : NetworkBehaviour
         bool isMove = false;
         Vector3 dir = Vector3.zero;
 
-        if (PlayerSettings.controlType == EControlType.KeyboardMouse)
+        if (PlayerSettings.controlType == EControlType.KeyboardMouse) // 키보드 모드
         {
             dir = Vector3.ClampMagnitude(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f),1f);
         }
-        else
+        else if (Input.GetMouseButton(0)) // 마우스 모드
         {
-            if(Input.GetMouseButton(0))
-            {
-                dir = (Input.mousePosition - new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f)).normalized;
-            }
+            dir = (Input.mousePosition - new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f)).normalized;
         }
 
         isMove = MoveCharacter(dir);

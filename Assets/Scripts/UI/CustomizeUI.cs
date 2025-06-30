@@ -48,6 +48,7 @@ public class CustomizeUI : MonoBehaviour
 
     private void OnEnable()
     {
+        ActiveColorPanel();
         UpdateColorButton();
 
         var roomSlots = (NetworkManager.singleton as AmongUsRoomManager).roomSlots;
@@ -103,8 +104,6 @@ public class CustomizeUI : MonoBehaviour
     {
         AmongUsRoomPlayer.MyRoomPlayer.lobbyPlayerCharacter.IsMovable = false;
         gameObject.SetActive(true);
-
-        ActiveColorPanel();
     }
 
     public void Close()

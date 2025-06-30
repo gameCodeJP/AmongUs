@@ -44,6 +44,8 @@ public class OnlineUI : MonoBehaviour
         if (EmptyCheckName())
             return;
 
+        PlayerSettings.nickname = nicknameInputField.text;
+
         NetworkManager manager = AmongUsRoomManager.singleton;
         manager.StartClient();
     }

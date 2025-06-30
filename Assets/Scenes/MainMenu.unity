@@ -9023,13 +9023,15 @@ MonoBehaviour:
   evaluationMethod: 0
   evaluationInterval: 3
   timeInterpolationGui: 0
-  showRoomGUI: 1
+  showRoomGUI: 0
   minPlayers: 1
   roomPlayerPrefab: {fileID: -8159165186522522218, guid: 5b3ccb718e9099b43bec141a3c80ba01, type: 3}
   RoomScene: Assets/Scenes/GameRoom.unity
   GameplayScene: Assets/Scenes/GamePlay.unity
   _allPlayersReady: 0
   clientIndex: 0
+  minPlayerCount: 0
+  imposterCount: 0
 --- !u!4 &1004870985
 Transform:
   m_ObjectHideFlags: 0
