@@ -22,19 +22,19 @@ public class WeaponPointLight : MonoBehaviour
             }
         }
     }
-
+        
     public void TurnOnLight()
     {
         animator.SetTrigger("on");
-        StartCoroutine(TurnOnLightAtChild());
+        StartCoroutine(TurnOnLightAtChild()); 
     }
 
     private IEnumerator TurnOnLightAtChild()
     {
         yield return wait;
 
-        foreach(var child in lights)
-        {
+        foreach (var child in lights)
+        {   
             child.TurnOnLight();
         }
     }
