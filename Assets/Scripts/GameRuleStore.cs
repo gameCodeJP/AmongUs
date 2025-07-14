@@ -346,4 +346,27 @@ public class GameRuleStore : NetworkBehaviour
 
         SetRecommendGameRule();
     }
+
+    public GameRuleData GetGameRuleData()
+    {
+        return new GameRuleData()
+        {
+            commonTask = commonTask,
+            complexTask = complexTask,
+            simpleTask = simpleTask,
+            confirmEjects = confirmEjects,
+            crewSight = crewSight,
+            imposterSight = imposterSight,
+            killCooldown = killCooldown,
+            killRange = killRange,
+            visualTasks = visualTasks,
+            moveSpeed = moveSpeed,
+            taskBarUpdates = taskBarUpdates,
+            meetingsTime = meetingsTime,
+            voteTime = voteTime,
+            anonymousVotes = anonymousVotes,
+            emergencyMeetings = emergencyMeetings,
+            emergencyMeetingsCooldown = emergencyMeetingsCooldown,
+        };
+    }
 }

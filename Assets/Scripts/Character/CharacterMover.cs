@@ -28,6 +28,12 @@ public class CharacterMover : NetworkBehaviour
     [SyncVar]
     public float speed = 2f;
 
+    [SerializeField]
+    private float characterSize = 0.5f;
+
+    [SerializeField]
+    private float cameraSize = 2.5f;
+
     private SpriteRenderer spriteRenderer;
 
     [SyncVar(hook = nameof(SetPlayerColor_Hook))]
@@ -53,7 +59,7 @@ public class CharacterMover : NetworkBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.material.SetColor("_PlayerCOlor", PlayerColor.GetColor(playerColor));
@@ -67,7 +73,7 @@ public class CharacterMover : NetworkBehaviour
         Camera cam = Camera.main;
         cam.transform.SetParent(transform);
         cam.transform.localPosition = new Vector3(0f, 0f, -10f);
-        cam.orthographicSize = 2.5f;
+        cam.orthographicSize = cameraSize;
     }
 
     // Update is called once per frame
@@ -113,7 +119,7 @@ public class CharacterMover : NetworkBehaviour
         if (dir.magnitude == 0f)
             return false;
 
-        transform.localScale = new Vector3(dir.x < 0f ? - 0.5f : 0.5f, 0.5f, 1f);
+        transform.localScale = new Vector3(dir.x < 0f ? -characterSize : characterSize, characterSize, 1f);
         transform.position += dir * speed * Time.fixedDeltaTime;
 
         rigidbody2D.MovePosition(dir * speed * Time.fixedDeltaTime);
