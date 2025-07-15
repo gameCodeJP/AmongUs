@@ -9,7 +9,7 @@ public enum EPlayerType
     Imposter
 }
 
-public class InGameMoverCharacter : CharacterMover
+public class IngameMoverCharacter : CharacterMover
 {
     [SyncVar]
     public EPlayerType playerType;
@@ -18,15 +18,15 @@ public class InGameMoverCharacter : CharacterMover
     {
         base.Start();
 
-        if (isClient == false)
+        GameSystem.Instance.AddPlayer(this);
+
+        if (isOwned == false)
             return;
 
         isMovable = true;
 
         AmongUsRoomPlayer myRoomPlayer = AmongUsRoomPlayer.MyRoomPlayer;
         CmdSetPlayerChracter(myRoomPlayer.nickname, myRoomPlayer.playerColor);
-
-        GameSystem.Instance.AddPlayer(this);
     }
 
     [Command]

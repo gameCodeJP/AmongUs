@@ -5,46 +5,64 @@ using Mirror;
 
 public class GameSystem : NetworkBehaviour
 {
-    public static GameSystem Instance;
+    public static GameSystem Instance { get; private set; }
 
-    public List<InGameMoverCharacter> players = new List<InGameMoverCharacter>();
+    private List<IngameMoverCharacter> players = new List<IngameMoverCharacter>();
 
-    public void AddPlayer(InGameMoverCharacter player)
+    public void AddPlayer(IngameMoverCharacter player)
     {
+        if (isServer == false)
+            return;
+
         if (players.Contains(player))
             return;
 
         players.Add(player);
 
-        if (isServer == false)
+        var manager = NetworkManager.singleton as AmongUsRoomManager;
+        if (manager == null || manager.roomSlots.Count != players.Count)
             return;
 
-        AmongUsRoomManager manager = NetworkManager.singleton as AmongUsRoomManager;
-        if (manager.roomSlots.Count != players.Count)
-            return;
+        AssignImposters(manager.imposterCount);
 
-        for(int i = 0; i < manager.imposterCount; ++i)
+        RpcStartGame(players);
+    }
+
+    private void AssignImposters(int imposterCount)
+    {
+        int assigned = 0; 
+        var available = new List<IngameMoverCharacter>(players);
+
+        while (assigned < imposterCount && available.Count > 0)
         {
-            InGameMoverCharacter curPlayer = players[Random.Range(0, players.Count)];
-            if(curPlayer.playerType != EPlayerType.Imposter)
-            {
-                player.playerType = EPlayerType.Imposter;
-            }
-            else
-            {
-                --i;
-            }
+            int idx = Random.Range(0, available.Count);
+            var candidate = available[idx];
+
+            candidate.playerType = EPlayerType.Imposter;
+            assigned++;
+
+            available.RemoveAt(idx);
         }
     }
+
+    [ClientRpc]
+    private void RpcStartGame(List<IngameMoverCharacter> players)
+    {
+        this.players = players;
+
+        StartCoroutine(GameReady());
+    }
+
+    private IEnumerator GameReady()
+    {
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(IngameUIManager.Instance.IngameIntroUI.ShowIntroSequence());
+    }
+
+    public List<IngameMoverCharacter> GetPlayerList() => players;
 
     private void Awake()
     {
         Instance = this;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
