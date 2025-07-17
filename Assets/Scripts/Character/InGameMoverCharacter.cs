@@ -14,6 +14,12 @@ public class IngameMoverCharacter : CharacterMover
     [SyncVar]
     public EPlayerType playerType;
 
+    [ClientRpc]
+    public void RpcTeleport(Vector3 position)
+    {
+        transform.position = position;
+    }
+
     public override void Start()
     {
         base.Start();

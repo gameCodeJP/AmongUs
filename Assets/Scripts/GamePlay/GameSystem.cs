@@ -9,6 +9,12 @@ public class GameSystem : NetworkBehaviour
 
     private List<IngameMoverCharacter> players = new List<IngameMoverCharacter>();
 
+    [SerializeField]
+    private Transform spawnTransform = default;
+
+    [SerializeField]
+    private float SpawnDistance = 0f;
+
     public void AddPlayer(IngameMoverCharacter player)
     {
         if (isServer == false)
@@ -24,6 +30,15 @@ public class GameSystem : NetworkBehaviour
             return;
 
         AssignImposters(manager.imposterCount);
+
+
+        for (int i = 0; i < players.Count; ++i)
+        {
+            float radian = (2f * Mathf.PI) / players.Count;
+            radian *= i;
+
+            players[i].RpcTeleport(spawnTransform.position + (new Vector3(Mathf.Cos(radian), Mathf.Sin(radian), 0f) * SpawnDistance));
+        }
 
         RpcStartGame(players);
     }
@@ -57,6 +72,10 @@ public class GameSystem : NetworkBehaviour
     {
         yield return new WaitForSeconds(1f);
         yield return StartCoroutine(IngameUIManager.Instance.IngameIntroUI.ShowIntroSequence());
+
+        yield return new WaitForSeconds(3f);
+
+        IngameUIManager.Instance.IngameIntroUI.Close();
     }
 
     public List<IngameMoverCharacter> GetPlayerList() => players;
